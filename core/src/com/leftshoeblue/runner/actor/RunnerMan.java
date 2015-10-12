@@ -3,15 +3,14 @@ package com.leftshoeblue.runner.actor;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.graphics.g2d.Animation;
 import com.badlogic.gdx.graphics.g2d.Batch;
-import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.graphics.g2d.TextureAtlas;
-import com.badlogic.gdx.input.GestureDetector;
-import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.physics.box2d.*;
 import com.badlogic.gdx.scenes.scene2d.Actor;
-import com.leftshoeblue.runner.io.FlickDirection;
+import com.leftshoeblue.runner.Constants;
 import com.leftshoeblue.runner.screen.GameScreen;
 import com.leftshoeblue.runner.util.RunnerUtils;
+import com.leftshoeblue.runner.world.body.BodyFactory;
+import com.leftshoeblue.runner.world.body.PositionFactory;
 
 /**
  * Created with IntelliJ IDEA.
@@ -20,85 +19,70 @@ import com.leftshoeblue.runner.util.RunnerUtils;
  * Time: 10:50 PM
  * To change this template use File | Settings | File Templates.
  */
-public class RunnerMan extends Actor {
+public class RunnerMan extends GameActor {
 
-    public static final int AVE_CHAR_WIDTH = 30;
-    public static final int AVE_CHAR_HEIGHT = 45;
     public static final int JUMP_VELOCITY = 6;
-    private World world;
-    private Body runnerManBody;
     private TextureAtlas runningTextureAtlas;
     private Animation runningAnimation;
     float elapsedTime = 0;
 
-    public RunnerMan(final World world){
-        this.world = world;
+    public RunnerMan(final Body body){
+        super(body);
+
+        //animating/render logic
         runningTextureAtlas = new TextureAtlas(Gdx.files.internal("spaceman.atlas"));
-        runningAnimation = new Animation(1/10f, runningTextureAtlas.getRegions());
-
-
-
-
+        runningAnimation = new Animation(1 / 10f, runningTextureAtlas.getRegions());
         restartRunner();
     }
 
     @Override
-    public void act (float delta) {
+    public void act(float delta) {
         super.act(delta);
 
+        //world position AND render logic logic?
 
-        setX(RunnerUtils.metersToPixels(runnerManBody.getPosition().x - RunnerUtils.pixelsToMeters(AVE_CHAR_WIDTH) / 2));
-        setY(RunnerUtils.metersToPixels(runnerManBody.getPosition().y - RunnerUtils.pixelsToMeters(AVE_CHAR_HEIGHT) / 2));
-
+        updatePositionFromBody();
         elapsedTime = elapsedTime + delta;
     }
 
     @Override
-    public void draw (Batch batch, float parentAlpha) {
+    public void draw(Batch batch, float parentAlpha) {
 
 
+        //animating/render logic
         batch.draw(runningAnimation.getKeyFrame(elapsedTime, true), getX(), getY());
 
 
-
     }
 
-    public void restartRunner(){
-        setX(GameScreen.WORLD_WIDTH/4);
-        setY(GameScreen.WORLD_HEIGHT/2);
-
-        BodyDef bd = new BodyDef();
-        bd.position.set(RunnerUtils.pixelsToMeters(getX() + AVE_CHAR_WIDTH /2),
-                RunnerUtils.pixelsToMeters(getY() + AVE_CHAR_HEIGHT /2));
-
-        bd.type = BodyDef.BodyType.DynamicBody;
-
-        runnerManBody = world.createBody(bd);
-
-        PolygonShape shape = new PolygonShape();
-        shape.setAsBox(RunnerUtils.pixelsToMeters(AVE_CHAR_WIDTH)/2,
-                RunnerUtils.pixelsToMeters(AVE_CHAR_HEIGHT)/2);
-
-        FixtureDef fd = new FixtureDef();
-        fd.shape = shape;
-        fd.density = 0.1f;
-        runnerManBody.createFixture(fd);
-        shape.dispose();
+    private void updatePositionFromBody(){
+        setX(RunnerUtils.metersToPixels(getBody().getPosition().x - RunnerUtils.pixelsToMeters(Constants.RUNNER_WIDTH) / 2));
+        setY(RunnerUtils.metersToPixels(getBody().getPosition().y - RunnerUtils.pixelsToMeters(Constants.RUNNER_HEIGHT) / 2));
     }
 
-    public void jump(){
-        this.runnerManBody.setLinearVelocity(this.runnerManBody.getLinearVelocity().x, JUMP_VELOCITY);
+    public void restartRunner() {
+        getBody().setTransform(PositionFactory.runnerManStartPosition(), 0);
     }
 
-    public void runRight(){
-        this.runnerManBody.setLinearVelocity(JUMP_VELOCITY, 0);
+    public void jump() {
+        this.getBody().setLinearVelocity(this.getBody().getLinearVelocity().x, JUMP_VELOCITY);
     }
 
-    public void runLeft(){
-        this.runnerManBody.setLinearVelocity(-JUMP_VELOCITY, 0);
+    public void runRight() {
+        this.getBody().setLinearVelocity(JUMP_VELOCITY, 0);
     }
 
-    public Body getRunnerManBody() {
-        return runnerManBody;
+    public void runLeft() {
+        this.getBody().setLinearVelocity(-JUMP_VELOCITY, 0);
+    }
+
+    public Bullet shoot(final World world){
+        //Don't want to return body here as it gives RunnerMan a dependency on World. Why not tho when its already dependent on box2d?.
+
+        Body bulletBody = BodyFactory.bulletBody(world, getBody().getPosition().x + RunnerUtils.pixelsToMeters(Constants.RUNNER_WIDTH),
+                getBody().getPosition().y);
+
+
+        return new Bullet(bulletBody);
     }
 }
