@@ -52,17 +52,41 @@ public class BodyFactory {
         BodyDef bulletBodyDef = new BodyDef();
         bulletBodyDef.type = BodyDef.BodyType.KinematicBody;
         bulletBodyDef.position.set(x,y);
-        bulletBodyDef.linearVelocity.set(5f,0);
+        bulletBodyDef.linearVelocity.set(14f,0);
+
 
         Body bulletBody = world.createBody(bulletBodyDef);
         FixtureDef bulletFixtureDef = new FixtureDef();
         PolygonShape shape = new PolygonShape();
-        shape.setAsBox(1f, 1f);
+        shape.setAsBox(.1f, .1f);
         bulletFixtureDef.shape = shape;
         bulletBody.createFixture(bulletFixtureDef);
+        bulletBody.setUserData(true);
         shape.dispose();
 
         return bulletBody;
     }
 
+
+    public static Body enemyBody(World world){
+        BodyDef bd = new BodyDef();
+
+
+
+        bd.type = BodyDef.BodyType.DynamicBody;
+        bd.position.set(PositionFactory.enemyPosition());
+        bd.linearVelocity.set(-25f, 0f);
+        Body body = world.createBody(bd);
+        PolygonShape shape = new PolygonShape();
+        shape.setAsBox(RunnerUtils.pixelsToMeters(Constants.RUNNER_WIDTH) / 2,
+                RunnerUtils.pixelsToMeters(Constants.RUNNER_HEIGHT) / 2);
+        FixtureDef fd = new FixtureDef();
+        fd.shape = shape;
+        fd.density = 0.1f;
+        body.createFixture(fd);
+        shape.dispose();
+
+        body.setUserData(true);
+        return body;
+    }
 }

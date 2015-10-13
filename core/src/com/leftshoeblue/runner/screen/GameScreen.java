@@ -48,8 +48,8 @@ public class GameScreen implements Screen, GestureDetector.GestureListener {
 
         stage = new RunnerStage();
 
-        GestureDetector gd = new GestureDetector(this);
-        Gdx.input.setInputProcessor(gd);
+        //GestureDetector gd = new GestureDetector(this);
+        //Gdx.input.setInputProcessor(gd);
 
     }
 
