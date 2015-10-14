@@ -26,7 +26,7 @@ public class BodyFactory {
                 RunnerUtils.pixelsToMeters(Constants.RUNNER_HEIGHT) / 2);
         FixtureDef fd = new FixtureDef();
         fd.shape = shape;
-        fd.density = 0.1f;
+        fd.density = 0.3f;
         runnerBody.createFixture(fd);
         shape.dispose();
 

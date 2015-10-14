@@ -24,6 +24,7 @@ public class RunnerMan extends GameActor {
     public static final int JUMP_VELOCITY = 6;
     private TextureAtlas runningTextureAtlas;
     private Animation runningAnimation;
+    private Integer bulletCount = 0;
     float elapsedTime = 0;
 
     public RunnerMan(final Body body){
@@ -79,10 +80,21 @@ public class RunnerMan extends GameActor {
     public Bullet shoot(final World world){
         //Don't want to return body here as it gives RunnerMan a dependency on World. Why not tho when its already dependent on box2d?.
 
-        Body bulletBody = BodyFactory.bulletBody(world, getBody().getPosition().x + RunnerUtils.pixelsToMeters(Constants.RUNNER_WIDTH),
-                getBody().getPosition().y);
+        if(bulletCount > 0){
+            bulletCount -= 1;
+            return new Bullet(BodyFactory.bulletBody(world, getBody().getPosition().x + RunnerUtils.pixelsToMeters(Constants.RUNNER_WIDTH),
+                    getBody().getPosition().y));
+        }
 
+        return null;
 
-        return new Bullet(bulletBody);
+    }
+
+    public void addBullets(Integer numAdded){
+        bulletCount += numAdded;
+    }
+
+    public boolean isOutOfBullets(){
+        return bulletCount == 0;
     }
 }
