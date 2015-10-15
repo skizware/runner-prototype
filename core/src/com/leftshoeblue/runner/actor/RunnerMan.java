@@ -21,7 +21,7 @@ import com.leftshoeblue.runner.world.body.PositionFactory;
  */
 public class RunnerMan extends GameActor {
 
-    public static final int JUMP_VELOCITY = 6;
+    public static final int JUMP_VELOCITY = 16;
     private TextureAtlas runningTextureAtlas;
     private Animation runningAnimation;
     private Integer bulletCount = 0;

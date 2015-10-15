@@ -42,20 +42,36 @@ public class RunnerStage extends Stage {
 
     public RunnerStage() {
         super();
+        initStage();
+    }
 
-        camera = new OrthographicCamera(Constants.CAMERA_WIDTH, Constants.CAMERA_HEIGHT);
-        world = new World(new Vector2(0, -9.8f), true);
-        world.setContactListener(new StageContactListener());
+    private void initStage() {
+        setupCamera();
+        setupWorld();
+        setupRunner();
+
         enemyGenerator = new EnemyGenerator();
-        runnerMan = new RunnerMan(BodyFactory.runnerManBody(world));
-        runnerMan.addBullets(INITIAL_BULLET_COUNT);
-        BodyFactory.groundBody(world);
-        addActor(runnerMan);
         debugRenderer = new Box2DDebugRenderer();
         Gdx.input.setInputProcessor(new GestureDetector(new GestureHandler()));
     }
 
+    private void setupRunner() {
+        runnerMan = new RunnerMan(BodyFactory.runnerManBody(world));
+        runnerMan.addBullets(INITIAL_BULLET_COUNT);
+        addActor(runnerMan);
+    }
 
+    private void setupWorld() {
+        world = new World(new Vector2(0, -40f), true);
+        world.setContactListener(new StageContactListener());
+        BodyFactory.groundBody(world);
+    }
+
+    private void setupCamera() {
+        camera = new OrthographicCamera(Constants.CAMERA_WIDTH, Constants.CAMERA_HEIGHT);
+        camera.position.set(Constants.CAMERA_WIDTH / 2, Constants.CAMERA_HEIGHT / 2, 0);
+        getViewport().setCamera(camera);
+    }
 
 
     @Override

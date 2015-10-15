@@ -19,7 +19,7 @@ public class PositionFactory {
     }
 
     public static Vector2 enemyPosition(){
-        return new Vector2(RunnerUtils.pixelsToMeters(Constants.RUNNER_WIDTH/2+800),
+        return new Vector2(RunnerUtils.pixelsToMeters(Constants.CAMERA_WIDTH + 30),
                 RunnerUtils.pixelsToMeters(Constants.RUNNER_HEIGHT/2));
     }
 

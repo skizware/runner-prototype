@@ -75,7 +75,7 @@ public class BodyFactory {
 
         bd.type = BodyDef.BodyType.DynamicBody;
         bd.position.set(PositionFactory.enemyPosition());
-        bd.linearVelocity.set(-25f, 0f);
+        bd.linearVelocity.set(-20f, 0f);
         Body body = world.createBody(bd);
         PolygonShape shape = new PolygonShape();
         shape.setAsBox(RunnerUtils.pixelsToMeters(Constants.RUNNER_WIDTH) / 2,
