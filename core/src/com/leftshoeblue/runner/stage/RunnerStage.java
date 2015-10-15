@@ -27,7 +27,7 @@ import java.util.List;
 public class RunnerStage extends Stage {
 
     private static final double RELOAD_TIME = 1;
-    public static final int INITIAL_BULLET_COUNT = 3;
+    public static final int INITIAL_BULLET_COUNT = 2;
 
     World world;
     RunnerMan runnerMan;
@@ -157,13 +157,15 @@ public class RunnerStage extends Stage {
     public class GestureHandler implements GestureDetector.GestureListener {
         @Override
         public boolean touchDown(float x, float y, int pointer, int button) {
-            runnerMan.shoot(world);
-            return true;
+            return false;
         }
 
         @Override
         public boolean tap(float x, float y, int count, int button) {
-            return false;  //To change body of implemented methods use File | Settings | File Templates.
+
+            runnerMan.shoot(world);
+
+            return true;  //To change body of implemented methods use File | Settings | File Templates.
         }
 
         @Override
