@@ -14,7 +14,6 @@ import com.leftshoeblue.runner.util.RunnerUtils;
 import com.leftshoeblue.runner.world.body.BodyFactory;
 
 import java.util.ArrayList;
-import java.util.LinkedList;
 import java.util.List;
 
 /**

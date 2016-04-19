@@ -1,18 +1,13 @@
 package com.leftshoeblue.runner.screen;
 
-import com.badlogic.gdx.Game;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Screen;
 import com.badlogic.gdx.graphics.GL20;
-import com.badlogic.gdx.math.Vector2;
-import com.badlogic.gdx.physics.box2d.World;
 import com.badlogic.gdx.scenes.scene2d.Stage;
 import com.badlogic.gdx.scenes.scene2d.actions.Actions;
 import com.badlogic.gdx.scenes.scene2d.ui.Image;
-import com.badlogic.gdx.utils.Scaling;
 import com.leftshoeblue.runner.Assets;
 import com.leftshoeblue.runner.RunnerGame;
-import com.leftshoeblue.runner.util.RunnerUtils;
 
 /**
  * Created with IntelliJ IDEA.
